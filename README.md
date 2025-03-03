@@ -13,7 +13,7 @@ Only tracks capacity and size (using only one variable), does not manage memory.
 > simple (not complete) example
 
 ```cxx
-#include <son8/capacity.hpp>
+#include <son8/capacity.hxx>
 #include <algorithm>
 class Vector {
     using Capacity = son8::capacity::Exponent< std::size_t >;
