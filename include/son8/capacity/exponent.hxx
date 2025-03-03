@@ -62,3 +62,5 @@ namespace son8::capacity {
 } // namespace son8::capacity
 
 #endif//SON8_CAPACITY_EXPONENT_HXX
+
+// Ⓒ 2025 Oleg'Ease'Kharchuk ᦒ
