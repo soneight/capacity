@@ -5,6 +5,8 @@
 #include <cstddef>
 #include <limits>
 #include <optional>
+#include <type_traits>
+#include <utility>
 
 namespace son8::capacity {
     // Exponent class template
@@ -14,7 +16,7 @@ namespace son8::capacity {
     >
     class Exponent {
         T size_{};
-        [[nodiscard]] constexpr
+        [[nodiscard]] constexpr // TODO: add platform-specific solution?
         auto next_power2(std::size_t x) const noexcept -> std::size_t {
             if (x == 0) return 0;
             --x;
@@ -30,7 +32,7 @@ namespace son8::capacity {
     public:
         using OptUpdateCapacity = std::optional< std::size_t >;
         Exponent() = default;
-        Exponent(std::size_t n) { (void)add(n); }
+        Exponent(std::size_t n) { std::ignore = add(n); }
         [[nodiscard]]
         OptUpdateCapacity add(std::size_t n) {
             assert(static_cast< T >(size_ + n) > size_);
@@ -65,3 +67,5 @@ namespace son8::capacity {
 } // namespace son8::capacity
 
 #endif//SON8_CAPACITY_EXPONENT_HXX
+
+// Ⓒ 2025 Oleg'Ease'Kharchuk ᦒ
