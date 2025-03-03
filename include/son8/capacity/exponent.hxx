@@ -33,7 +33,6 @@ namespace son8::capacity {
         Exponent(std::size_t n) { (void)add(n); }
         [[nodiscard]]
         OptUpdateCapacity add(std::size_t n) {
-            assert(n != 0);
             assert(static_cast< T >(size_ + n) > size_);
             auto old = capacity();
             size_ += n;
@@ -42,12 +41,16 @@ namespace son8::capacity {
         }
         [[nodiscard]]
         OptUpdateCapacity sub(std::size_t n) {
-            assert(n != 0);
             assert(static_cast< T >(size_ - n) < size_);
             auto old = capacity();
             size_ -= n;
             auto cap = capacity();
             return cap < old ? cap : OptUpdateCapacity{};
+        }
+        [[nodiscard]] // assert on n == size (logic error?)
+        OptUpdateCapacity assign(std::size_t n) {
+            if (n > size_) return add(n - size_);
+            else return sub(size_ - n);
         }
         [[nodiscard]] constexpr
         auto capacity() const noexcept -> std::size_t { return next_power2(size_); }
@@ -56,7 +59,7 @@ namespace son8::capacity {
         [[nodiscard]] constexpr
         auto last() const noexcept -> std::size_t { assert(size_ != 0); return size_ - 1; }
         [[nodiscard]] constexpr
-        auto max_size() const noexcept -> std::size_t { return std::numeric_limits< T >::max(); }
+        static auto max_size() noexcept -> std::size_t { return std::numeric_limits< T >::max(); }
     }; // class Exponent
 
 } // namespace son8::capacity

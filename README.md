@@ -17,24 +17,24 @@ Only tracks capacity and size (using only one variable), does not manage memory.
 #include <algorithm>
 class Vector {
     using Capacity = son8::capacity::Exponent< std::size_t >;
-    Capacity capacity{};
-    int *data{nullptr};
+    Capacity capsize_{ };
+    int *data_{ nullptr };
 public:
     Vector() = default;
-    Vector(int elems) : capacity(elems), data(new int[capacity.capacity()]) {}
-    ~Vector() { delete[] data; }
+    Vector(int elems) : capsize_(elems), data_(new int[capsize_.capacity()]) { }
+    ~Vector() { delete[] data_; }
     void push_back(int elem) {
-        auto update_capacity = capacity.add(1);
+        auto update_capacity = capsize_.add(1);
         if (update_capacity) {
             int *new_data = new int[*update_capacity];
-            std::copy(data, data + capacity.last(), new_data);
-            delete[] data;
-            data = new_data;
+            std::copy(data_, data_ + capsize_.last(), new_data);
+            delete[] data_;
+            data_ = new_data;
         }
-        data[capacity.last()] = elem;
+        data_[capsize_.last()] = elem;
     }
-    int *begin() { return data; }
-    int *end() { return data + capacity.size(); }
+    int *begin() { return data_; }
+    int *end() { return data_ + capsize_.size(); }
 };
 ```
 
