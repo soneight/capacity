@@ -31,9 +31,11 @@ namespace son8::capacity {
         }
     public:
         using OptUpdateCapacity = std::optional< std::size_t >;
+        constexpr
         Exponent() = default;
+        constexpr
         Exponent(std::size_t n) { std::ignore = add(n); }
-        [[nodiscard]]
+        [[nodiscard]] constexpr
         OptUpdateCapacity add(std::size_t n) {
             assert(n != 0);
             assert(static_cast< T >(size_ + n) > size_);
@@ -42,7 +44,7 @@ namespace son8::capacity {
             auto cap = capacity();
             return cap > old ? cap : OptUpdateCapacity{};
         }
-        [[nodiscard]]
+        [[nodiscard]] constexpr
         OptUpdateCapacity sub(std::size_t n) {
             assert(n != 0);
             assert(static_cast< T >(size_ - n) < size_);
