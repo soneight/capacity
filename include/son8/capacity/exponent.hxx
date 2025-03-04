@@ -11,7 +11,7 @@
 namespace son8::capacity {
     // Exponent class template
     template<
-        typename T, // unsigned integral types only
+        typename T = std::size_t, // unsigned integral types only
         typename = std::enable_if_t< std::is_integral_v< T > && std::is_unsigned_v< T > && sizeof(T) <= sizeof(std::size_t) >
     >
     class Exponent {
@@ -33,9 +33,9 @@ namespace son8::capacity {
         using OptUpdateCapacity = std::optional< std::size_t >;
         constexpr
         Exponent() = default;
-        constexpr
-        Exponent(std::size_t n) { std::ignore = add(n); }
-        [[nodiscard]] constexpr
+        constexpr explicit // not default construction means that `new` must be called, call `new` on zero make no sense
+        Exponent(std::size_t n) : size_(n) { assert(n != 0); }
+        [[nodiscard]]
         OptUpdateCapacity add(std::size_t n) {
             assert(static_cast< T >(size_ + n) > size_);
             auto old = capacity();
@@ -43,7 +43,7 @@ namespace son8::capacity {
             auto cap = capacity();
             return cap > old ? cap : OptUpdateCapacity{};
         }
-        [[nodiscard]] constexpr
+        [[nodiscard]]
         OptUpdateCapacity sub(std::size_t n) {
             assert(static_cast< T >(size_ - n) < size_);
             auto old = capacity();
